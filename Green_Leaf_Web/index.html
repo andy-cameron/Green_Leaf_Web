@@ -1,35 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-functions.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
+    <script language="javascript" type="text/javascript" src="index.js"></script>
+    <script src="plotly.min.js"></script>
     <script>
     var config = {
       apiKey: "AIzaSyBTwjq3Vh6FDQwFhCqV7zFZpjOxpIOvQAY",
       authDomain: "green-leaf-b00681947.firebaseapp.com",
       databaseURL: "https://green-leaf-b00681947.firebaseio.com",
       projectId: "green-leaf-b00681947",
-      storageBucket: "green-leaf-b00681947.appspot.com",
+      storageBucket: "green-leaf- b00681947.appspot.com",
       messagingSenderId: "122606353498"
-    };
-    firebase.initializeApp(config);
-
-  </script>
-    <!--plotly-->
-    <script src="plotly.min.js"></script>
-
+      };
+      firebase.initializeApp(config);
+      console.log(firebase);
+    </script>    
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
       #message { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #chart { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
       #message h2 { color: #569E05; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
@@ -41,69 +33,64 @@
         body { border-top: 16px solid #569E05; }
       }
     </style>
-  </head>
-  <body>
-    <h3 id="bigOne">Blah</h3>
+</head>
+<body>
+  <div id="message">
+    <h2>Welcome</h2>
+    <h1>Firebase Hosting Setup Complete</h1>
+    <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+    <a target="_blank" href="https://firebase.google.com/docs/hosting/">Final TEST</a>  
+  </div>
+  <h1 id = "week_index_heading"></h1>
+  <h1>Current Week</h1>
+  <div id="chart">
     <script>
-      // Initialize Firebase
-      var bigOne = document.getElementById('bigOne');
-      var dbRef = firebase.database().ref().child('text');
-      dbRef.on('value', snap => bigOne.innerText = snap.val());
+    // Get elements
+    const preObject = document.getElementById('object');
+    var chartHeading = document.getElementById('week_index_heading');
+
+    var database = firebase.database();
+
+    // Stats Ref
+    var statsRef = database.ref("Stats");
+    // Config Ref
+    var configRef = database.ref('Configuration/current_week_index');
+    // Obtainging Day Stats
+    configRef.once("value").then(function(snapshot) {
+      var index = snapshot.val();
+      var monday, tuesday, wednesday, thursday, friday;
+
+      console.log("value", index);
+      statsRef.once("value").then(function(snapshot) {
+
+          monday = snapshot.child(index).child("day_1_monday").val();
+          tuesday = snapshot.child(index).child("day_2_tuesday").val();
+          wednesday = snapshot.child(index).child("day_3_wednesday").val();
+          thursday = snapshot.child(index).child("day_4_thursday").val();
+          friday = snapshot.child(index).child("day_5_friday").val();
+
+          console.log("text", monday);
+          // Setting Chart
+        var data = [{
+                  x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                  y: [monday, tuesday, wednesday, thursday, friday],
+                  marker:{
+                    color: 'rgba(42,116,0, 0.8)'
+                    },
+                  type: 'bar'
+                }];
+                var layout = {
+                  xaxis: {
+                    title: 'Day of the Week'
+                  },
+                  yaxis: {
+                    title: 'Number of Users Eating'
+                  }
+                }
+                Plotly.newPlot('chart', data, layout, {}, {showSendToCloud:true});
+        });
+    });
     </script>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Final TEST</a>
-    </div>
-    <div id="message">
-      <h2>Green Leaf Graph</h2>
-      <div id="chart"></div>
-          <script>
-            var data = [{
-              x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-              y: [20, 14, 23, 12, 4],
-              marker:{
-                color: 'rgba(42,116,0, 0.8)'
-                },
-              type: 'bar'
-            }];
-            var layout = {
-              xaxis: {
-                title: 'Day of the Week'
-              },
-              yaxis: {
-                title: 'Number of Users Eating'
-              }
-            }
-
-            Plotly.newPlot('chart', data, layout, {}, {showSendToCloud:true});
-          </script>
-    </div>
-
-    <p id="load">Firebase SDK Loading&hellip;</p>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+  </div>
+</body>
 </html>
