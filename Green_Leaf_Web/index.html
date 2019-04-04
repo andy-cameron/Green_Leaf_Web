@@ -2,26 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
-    <script language="javascript" type="text/javascript" src="index.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="plotly.min.js"></script>
-    <script>
-    var config = {
-      apiKey: "AIzaSyBTwjq3Vh6FDQwFhCqV7zFZpjOxpIOvQAY",
-      authDomain: "green-leaf-b00681947.firebaseapp.com",
-      databaseURL: "https://green-leaf-b00681947.firebaseio.com",
-      projectId: "green-leaf-b00681947",
-      storageBucket: "green-leaf- b00681947.appspot.com",
-      messagingSenderId: "122606353498"
-      };
-      firebase.initializeApp(config);
-      console.log(firebase);
-    </script>    
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
       #message { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #chart { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
       #message h2 { color: #569E05; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
@@ -36,61 +24,39 @@
 </head>
 <body>
   <div id="message">
-    <h2>Welcome</h2>
-    <h1>Firebase Hosting Setup Complete</h1>
-    <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-    <a target="_blank" href="https://firebase.google.com/docs/hosting/">Final TEST</a>  
+    <h2>Welcome Admin to Green Leaf Web Services</h2>
+    <div class="container text-center">
+      <div class='col-sm-12'>
+        <p>Update the configuration, choose the Monday when you want the next week to start</p>
+        <div class="container text-center">
+          <div class = "row">
+            <div class = "col-sm-4">
+              <p>Select the date you want to start</p>
+              <input type = "date"></input>
+              <p></p>
+              <p>Week Index Selector</p>
+              <input type= "text"></input>
+              <p></p>   
+              <a type="">CONFIRM</a>
+            </div>
+            <div class = "col-sm-4">
+            </div>
+            <div class = "col-sm-4">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <h1 id = "week_index_heading"></h1>
-  <h1>Current Week</h1>
-  <div id="chart">
-    <script>
-    // Get elements
-    const preObject = document.getElementById('object');
-    var chartHeading = document.getElementById('week_index_heading');
-
-    var database = firebase.database();
-
-    // Stats Ref
-    var statsRef = database.ref("Stats");
-    // Config Ref
-    var configRef = database.ref('Configuration/current_week_index');
-    // Obtainging Day Stats
-    configRef.once("value").then(function(snapshot) {
-      var index = snapshot.val();
-      var monday, tuesday, wednesday, thursday, friday;
-
-      console.log("value", index);
-      statsRef.once("value").then(function(snapshot) {
-
-          monday = snapshot.child(index).child("day_1_monday").val();
-          tuesday = snapshot.child(index).child("day_2_tuesday").val();
-          wednesday = snapshot.child(index).child("day_3_wednesday").val();
-          thursday = snapshot.child(index).child("day_4_thursday").val();
-          friday = snapshot.child(index).child("day_5_friday").val();
-
-          console.log("text", monday);
-          // Setting Chart
-        var data = [{
-                  x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                  y: [monday, tuesday, wednesday, thursday, friday],
-                  marker:{
-                    color: 'rgba(42,116,0, 0.8)'
-                    },
-                  type: 'bar'
-                }];
-                var layout = {
-                  xaxis: {
-                    title: 'Day of the Week'
-                  },
-                  yaxis: {
-                    title: 'Number of Users Eating'
-                  }
-                }
-                Plotly.newPlot('chart', data, layout, {}, {showSendToCloud:true});
-        });
-    });
-    </script>
+  <div id = "message">
+    <h2>Current Week Stats</h2>
+    <h1 id="weekHeading"><h1>
+      <div id="chart">
+    </div>
   </div>
+  <script src="index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
