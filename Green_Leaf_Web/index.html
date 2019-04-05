@@ -5,11 +5,18 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="plotly.min.js"></script>
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #statsTable {text-align: center;}
+      #buttonHolder {border: 3px solid #ddd; display: inline-block; border-radius:90px; background-color: #e6e6e6}
+      #btnLogin {border-radius:90px; background-color: #93C13D; width:120px}
+      #btnLogout {border-radius:90px; background-color: #ff4d4d; width:120px}
+      #btnConfirm {border-radius:90px; background-color: #93C13D; width:120px}
+      #th, td {border-bottom: 1px solid #ddd; text-align: center;}
+      #message { background: white; max-width: 800px; max-height: 800px; margin: 50px auto 16px; padding: 32px 24px; border-radius: 3px; }
       #loginArea { background: white; max-width: 400px; max-height: 400px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
       #message h2 { color: #569E05; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
@@ -39,13 +46,15 @@
             <input id="txtPassword" type="password" placeholder="Enter Password">
         </div>
         
-        <button id="btnLogin" class="btn btn-action">
-        Log in
-        </button>
+        <div id="buttonHolder">
+          <button id="btnLogin" class="btn btn-action">
+          Log in
+          </button>
 
-        <button id="btnLogout" class="btn btn-action hide">
-        Log out
-        </button>
+          <button id="btnLogout" class="btn btn-action hide">
+          Log out
+          </button>
+        </div>
   </div>
   <div id="admin_content" style="visibility: hidden;">
   <div id="message">
@@ -55,18 +64,16 @@
         <p>Update the configuration, choose the Monday when you want the next week to start</p>
         <div class="container text-center">
           <div class = "row">
-            <div class = "col-sm-4">
-              <p>Select the date you want to start</p>
+            <div class = "col-sm-4" style="font-weight: bold">
+              <p>Select Week's Start Date</p>
               <input id="dateSelector" type = "date"></input>
-              <p></p>
-              <p>Week Index Selector</p>
+            </div>
+            <div class = "col-sm-4" style="font-weight: bold">
+            <p>Week Index Selector</p>
               <input type= "text" id="dateIndex"></input>
-              <p></p>   
-              <button id="btnConfirm" class="btn btn-action">CONFIRM</button>
             </div>
-            <div class = "col-sm-4">
-            </div>
-            <div class = "col-sm-4">
+            <div class = "col-sm-4" style="margin-top: 53px">
+            <button id="btnConfirm" class="btn btn-action">CONFIRM</button>
             </div>
           </div>
         </div>
@@ -76,8 +83,23 @@
   <div id = "message">
     <h2>Current Week Stats</h2>
     <h1 id="weekHeading"><h1>
-      <div id="chart" class="js-plotly-plot">
+    <div id="googleCharts">
     </div>
+  </div>
+  <div id = "message">
+    <h2>View Previous Weeks</h2>
+    <div id = "stats">
+      <table style="width:100%" id="statsTable">
+        <th>Week Index</th>
+        <th>Start Date</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+      </table>
+    </div>
+  </div>
   </div>
   <script src="index.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
