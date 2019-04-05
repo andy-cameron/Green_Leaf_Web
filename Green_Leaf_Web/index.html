@@ -10,6 +10,7 @@
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
       #message { background: white; max-width: 800px; max-height: 800px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #loginArea { background: white; max-width: 400px; max-height: 400px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
       #message h2 { color: #569E05; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
@@ -23,6 +24,30 @@
     </style>
 </head>
 <body>
+
+<div id="message" style="text-align:center">
+        <div>
+            <img src="green_leaf.png" width="50" height="50" vspace="10">
+        </div>
+        <div>
+            <label for="uname"><b>Username</b></label>
+            <input id="txtEmail" type="email" placeholder="Enter Username">  
+        </div>
+        
+        <div>
+            <label for="psw"><b>Password</b></label>
+            <input id="txtPassword" type="password" placeholder="Enter Password">
+        </div>
+        
+        <button id="btnLogin" class="btn btn-action">
+        Log in
+        </button>
+
+        <button id="btnLogout" class="btn btn-action hide">
+        Log out
+        </button>
+  </div>
+  <div id="admin_content" style="visibility: hidden;">
   <div id="message">
     <h2>Welcome Admin to Green Leaf Web Services</h2>
     <div class="container text-center">
@@ -32,12 +57,12 @@
           <div class = "row">
             <div class = "col-sm-4">
               <p>Select the date you want to start</p>
-              <input type = "date"></input>
+              <input id="dateSelector" type = "date"></input>
               <p></p>
               <p>Week Index Selector</p>
-              <input type= "text"></input>
+              <input type= "text" id="dateIndex"></input>
               <p></p>   
-              <a type="">CONFIRM</a>
+              <button id="btnConfirm" class="btn btn-action">CONFIRM</button>
             </div>
             <div class = "col-sm-4">
             </div>
