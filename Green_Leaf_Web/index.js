@@ -21,9 +21,11 @@
     const dateSelector = document.getElementById('dateSelector');
     const dateIndex = document.getElementById('dateIndex');
     const btnConfirm = document.getElementById('btnConfirm');
+    const table = document.getElementById('statsTable');
 
     // Stats Ref
     var statsRef = database.ref("Stats");
+
     // Config Ref
     var updateConfigRef = database.ref('Configuration');
     var configRef = database.ref('Configuration/current_week_index');
@@ -52,6 +54,7 @@
                 statsRef.child(index).child("day_4_thursday").set(0);
                 statsRef.child(index).child("day_5_friday").set(0);
                 statsRef.child(index).child("start_date").set(dateText);
+                statsRef.child(index).child("week_index").set(index);
                 window.location.reload();
                 alert('New field created');
             }
@@ -81,23 +84,24 @@
         if(firebaseUser) {
             console.log(firebaseUser);
             // window.location.href = "index.html";
-            divAdmin.style="visibility: visible"
-            btnLogin.style="visibility: hidden"
-            btnLogout.style="visibility: visible"
+            divAdmin.style = "visibility: visible"
+            btnLogin.style = "visibility: hidden"
+            btnLogout.style = "visibility: visible"
         } else {
             console.log('not logged in');
-            btnLogin.style="visibility: visible"
-            btnLogout.style="visibility: hidden"
+            btnLogin.style = "visibility: visible"
+            btnLogout.style = "visibility: hidden"
             // divAdmin.style="visibility: hidden"
         }
     });
 
     // Get elements
     const preObject = document.getElementById('object');
-    var chartHeading = document.getElementById('weekHeading');
-
+    var weekHeading = document.getElementById('weekHeading');
+    console.log(weekRef);
     weekRef.once("value").then(function(snapshot) {
         var currentWeek = snapshot.val();
+        console.log(currentWeek);
         weekHeading.innerText = currentWeek;
     });
     // Obtainging Day Stats
@@ -115,25 +119,52 @@
             friday = snapshot.child(index).child("day_5_friday").val();
 
             console.log("text", monday);
-            // Setting Chart
-        var data = [{
-                    x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                    y: [monday, tuesday, wednesday, thursday, friday],
-                    marker:{
-                    color: 'rgba(42,116,0, 0.8)'
-                    },
-                    type: 'bar'
-                }];
-                var layout = {
-                    xaxis: {
-                    title: 'Day of the Week'
-                    },
-                    yaxis: {
-                    title: 'Number of Users Eating'
-                    }
-                }
-                Plotly.newPlot('chart', data, layout, {}, {showSendToCloud:true});
+
+            google.charts.load("current", {'packages':["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var dataGoogle = google.visualization.arrayToDataTable([
+                    ['Day', 'Number of People Eating', { role: 'style' }],
+                    ['Monday', monday, '#569E05'],
+                    ['Tuesday', tuesday, '#569E05'],
+                    ['Wednesday', wednesday, '#569E05'],
+                    ['Thursday', thursday, '#569E05'],
+                    ['Friday', friday, '#569E05']
+                ]);
+
+                var options = {
+                    title: "Number of User's Eating This Week",
+                    column: {groupWidth: "100%"},
+                    legend: {position: "none" },
+                    height: "500",
+                    vAxis: {title: "Number of Users Eating", minValue: 0}
+                };
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('googleCharts'));
+                chart.draw(dataGoogle, options);
+            }
         });
+
+     // Populate Table
+    statsRef.once('value', function(snapshot){
+        if(snapshot.exists()){
+            var content = '';
+            snapshot.forEach(function(data){
+                var val = data.val();
+                content +='<tr>';
+                content += '<td>' + val.week_index + '</td>';
+                content += '<td>' + val.start_date + '</td>';
+                content += '<td>' + val.day_1_monday + '</td>';
+                content += '<td>' + val.day_2_tuesday + '</td>';
+                content += '<td>' + val.day_3_wednesday + '</td>';
+                content += '<td>' + val.day_4_thursday + '</td>';
+                content += '<td>' + val.day_5_friday + '</td>';
+                content += '</tr>';
+            });
+            $('#statsTable').append(content);
+        }
     });
 
+    });
 }());
