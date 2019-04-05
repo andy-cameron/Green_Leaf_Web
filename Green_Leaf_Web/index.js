@@ -44,6 +44,7 @@
         statsRef.child(index).once('value', function(snapshot) {
             if(snapshot.exists()) {
                 alert('Field already exists')
+                window.location.reload();
             } else {
                 statsRef.child(index).child("day_1_monday").set(0);
                 statsRef.child(index).child("day_2_tuesday").set(0);
@@ -51,6 +52,7 @@
                 statsRef.child(index).child("day_4_thursday").set(0);
                 statsRef.child(index).child("day_5_friday").set(0);
                 statsRef.child(index).child("start_date").set(dateText);
+                window.location.reload();
                 alert('New field created');
             }
         });
