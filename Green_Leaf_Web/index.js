@@ -26,6 +26,9 @@
     // Stats Ref
     var statsRef = database.ref("Stats");
 
+    // Profile Ref
+    var profileRef = database.ref("Profiles");
+
     // Config Ref
     var updateConfigRef = database.ref('Configuration');
     var configRef = database.ref('Configuration/current_week_index');
@@ -146,7 +149,7 @@
             }
         });
 
-     // Populate Table
+    // Populate Table
     statsRef.once('value', function(snapshot){
         if(snapshot.exists()){
             var content = '';
@@ -166,5 +169,25 @@
         }
     });
 
+    // Populate User Table
+    // Populate Table
+    profileRef.once('value', function(snapshot){
+        if(snapshot.exists()){
+            var content = '';
+            snapshot.forEach(function(data){
+                var val = data.val();
+                content +='<tr>';
+                content += '<td>' + val.email + '</td>';
+                content += '<td>' + val.lastName + '</td>';
+                content += '<td>' + val.firstName + '</td>';
+                content += '<td>' + val.organisation + '</td>';
+                content += '<td>' + val.currentNumberOfLeaves + '</td>';
+                content += '<td>' + val.totalNumberOfLeaves + '</td>';
+                content += '<td>' + val.plants + '</td>';
+                content += '</tr>';
+            });
+            $('#userStatsTable').append(content);
+        }
+    });
     });
 }());
