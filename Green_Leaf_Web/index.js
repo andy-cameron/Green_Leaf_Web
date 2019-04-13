@@ -22,6 +22,8 @@
     const dateIndex = document.getElementById('dateIndex');
     const btnConfirm = document.getElementById('btnConfirm');
     const table = document.getElementById('statsTable');
+    const bonusCodeText = document.getElementById('bonusCode');
+    const btnBonusCode = document.getElementById('btnBonusCode');
 
     // Stats Ref
     var statsRef = database.ref("Stats");
@@ -33,6 +35,22 @@
     var updateConfigRef = database.ref('Configuration');
     var configRef = database.ref('Configuration/current_week_index');
     var weekRef = database.ref('Configuration/current_week');
+    var bonusRef = database.ref('Configuration/bonus_code');
+
+    // Show Bonus Code
+    bonusRef.once("value").then(function(snapshot) {
+        var currentBonus = snapshot.val();
+        bonusCodeText.innerText = currentBonus;
+    });
+
+    // Update Bonus Code
+    btnBonusCode.addEventListener('click', e => {
+        var newCode = (Math.floor(100000 + Math.random() * 900000))
+        console.log(newCode);
+
+        bonusRef.set(newCode);
+        bonusCodeText.innerText = newCode;
+    });
 
     // Update Config
     btnConfirm.addEventListener('click', e => {
