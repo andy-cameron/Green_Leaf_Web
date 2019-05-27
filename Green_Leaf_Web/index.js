@@ -130,6 +130,9 @@
         var index = snapshot.val();
         var monday, tuesday, wednesday, thursday, friday;
 
+        //Updating index hint
+        dateIndex.placeholder = index;
+
         console.log("value", index);
         statsRef.once("value").then(function(snapshot) {
 
